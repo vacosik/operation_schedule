@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Календар операцій</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Графік операцій</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Час</th>
+                <th>Операційна</th>
+                <th>Операція</th>
+                <th>Пріоритет</th>
+                <th>Хірург</th>
+                <th>Анестезіолог</th>
+                <th>Асистенти</th>
+            </tr>
+        </thead>
+        <tbody id="operation-table">
+            <!-- Дані будуть завантажені динамічно -->
+        </tbody>
+    </table>
+    <script>
+        // Завантаження операцій
+        fetch('/api/operations')
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.getElementById('operation-table');
+                data.forEach(op => {
+                    const row = `
+                        <tr>
+                            <td>${op.date}</td>
+                            <td>${op.time}</td>
+                            <td>${op.operating_room}</td>
+                            <td>${op.operation_name}</td>
+                            <td>${op.priority}</td>
+                            <td>${op.surgeon}</td>
+                            <td>${op.anesthesiologist}</td>
+                            <td>${op.first_assistant}, ${op.second_assistant}</td>
+                        </tr>`;
+                    tableBody.innerHTML += row;
+                });
+            });
+    </script>
+</body>
+</html>
